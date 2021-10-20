@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-//const articles = require('../data/articles.js')
+const articles = require('../data/articles.js')
 
 const bcrypt = require('bcrypt')
 const {Client} = require('pg')
@@ -8,20 +8,20 @@ const {Client} = require('pg')
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
-    password: 'plote0511',
+    password: 'MUMS7091',
     database: 'projet'
 })
 client.connect()
 
 
 //La table contient une colonne serial et un colonne infos de type json.
-/*
+
 for (let i of articles) {
     let json = {name: i.name, description: i.description, image: i.image, price: i.price}
     let strJson = JSON.stringify(json)
     client.query('INSERT INTO articles(infos) VALUES ($1)', [strJson])
 }
-*/
+
 
 async function getArticle(id) {
     let promise = new Promise((resolve, reject) => {

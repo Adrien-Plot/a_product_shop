@@ -68,6 +68,14 @@ const articles = [
     description: "C'est le moment idéal de l'année pour économiser !",
     image: 'https://www.cdiscount.com/pdt2/3/4/2/1/300x300/ose4891372830342/rw/recuperateur-eau-de-pluie-%C3%B8-80-mm.jpg',
     price: 11
+  },
+
+  {
+    id: 12,
+    name: 'stylo',
+    description: "stylo",
+    image: 'https://bv-prd-fbi-fr-media.s3.amazonaws.com/pub/media/catalog/product/cache/ef4a54899b4f9d060853d6e60ec5e0f4/e/a/ea61d244372d13579814bb95283a2f0a2c827b10_79351083_1.jpg',
+    price: 11
   }
 ]
 
