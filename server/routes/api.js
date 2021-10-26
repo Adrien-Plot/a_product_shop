@@ -19,9 +19,27 @@ client.connect()
 for (let i of articles) {
     let json = {name: i.name, description: i.description, image: i.image, price: i.price}
     let strJson = JSON.stringify(json)
-    client.query('INSERT INTO articles(infos) VALUES ($1)', [strJson])
+    const verif= checkArticle(i.id)
+    /*
+       La promesse sera toujours enregistrée en attente tant que ses résultats
+       ne sont pas encore résolus. Vous devez faire appel .then à la promesse
+       pour capturer les résultats quel que soit l'état de la promesse
+    */
+    verif.then((value) => {
+            if (value===0)
+                client.query('INSERT INTO articles(id, infos) VALUES ($1, $2)', [i.id, strJson])
+
+        })
 }
 
+
+async function checkArticle(id) {
+    const result = await client.query({
+        text: 'SELECT infos FROM articles WHERE id = $1',
+        values:[id]
+    })
+    return (result.rows.length);
+}
 
 async function getArticle(id) {
     let promise = new Promise((resolve, reject) => {
