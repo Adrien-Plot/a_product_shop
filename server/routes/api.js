@@ -340,8 +340,10 @@ user {
 }
  */
 router.post('/panier/pay', async (req, res) => {
+   console.log("req.session.user.data:"+req.session.user.data)
     if (req.session.user.data) {
-        let panier = await getPanier(req.session.user.id)
+        console.log("req.session.user.data.id:"+req.session.user.data.id)
+        let panier = await getPanier(req.session.user.data.id)
         if (!panier) {
             res.status(400).json({message: "Votre panier est vide"})
             return
