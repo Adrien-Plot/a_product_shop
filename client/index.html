@@ -61,8 +61,14 @@
                             <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
+
                 <ul class="navbar-nav my-2 my-lg-0" v-else>
                     <li class="nav-item active">
+                        <a class="nav-link">
+                            <b>{{this.user.email}}</b>
+                        </a>
+                    </li>
+
                         <a class="nav-link" v-on:click="logout" v-bind:style="{cursor: 'pointer'}">
                             Se Deconnecter
                         </a>
