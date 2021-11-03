@@ -42,12 +42,12 @@
                             <router-link to='/panier'>Panier</router-link>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <button v-if="$route.path === '/'" type="button" class="btn btn-primary" data-toggle="modal"
                                 data-target="#exampleModal">
                             Ajouter un Article
                         </button>
-                    </li>
+                    </li>-->
                 </ul>
                 <ul class="navbar-nav my-2 my-lg-0" v-if="!user">
                     <li class="nav-item active">
@@ -84,7 +84,6 @@
                      :invaliddata="invaliddata"
                      :user="user"
                      @add-article="addArticle"
-                     @delete-article="deleteArticle"
                      @update-article="updateArticle"
                      @add-to-panier="addToPanier"
                      @delete-from-panier="deleteFromPanier"

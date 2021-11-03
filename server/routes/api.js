@@ -13,24 +13,61 @@ const client = new Client({
 })
 client.connect()
 
+// controler la présence de la table articles
+
+const liste_tables = client.query({
+    text: 'SELECT tablename FROM pg_tables WHERE tablename NOT LIKE \'pg_%\' '
+
+})
+console.log("liste des tables :")
+
+liste_tables.then((value1) => {
+    //console.log(value.rows)
+    const res_table1 = value1.rows.find(a => a.tablename === "panier")
+    console.log(res_table1)
+
+    if (typeof res_table1 === 'undefined') {
+        console.log("Création de la table car elle n'existe pas !!")
+        // creation de la table
+        const liste_tables = client.query({
+            text: 'CREATE TABLE panier ("user" INTEGER, article INTEGER, quantity INTEGER)'
+        })
+    }
+})
+
+liste_tables.then((value) => {
+    //console.log(value.rows)
+    const res_table = value.rows.find(a => a.tablename === "articles")
+    console.log(res_table)
+
+    if (typeof res_table === 'undefined') {
+        console.log("Création de la table car elle n'existe pas !!")
+        // creation de la table
+        const liste_tables =  client.query({
+            text: 'CREATE TABLE articles (id INTEGER, infos JSON, PRIMARY KEY (id))'
+        })
+    }
 
 //La table contient une colonne serial et un colonne infos de type json.
 
-for (let i of articles) {
-    let json = {name: i.name, description: i.description, image: i.image, price: i.price}
-    let strJson = JSON.stringify(json)
-    const verif= checkArticle(i.id)
-    /*
-       La promesse sera toujours enregistrée en attente tant que ses résultats
-       ne sont pas encore résolus. Vous devez faire appel .then à la promesse
-       pour capturer les résultats quel que soit l'état de la promesse
-    */
-    verif.then((value) => {
+    for (let i of articles) {
+        let json = {name: i.name, description: i.description, image: i.image, price: i.price}
+        let strJson = JSON.stringify(json)
+        /*
+           La promesse sera toujours enregistrée en attente tant que ses résultats
+           ne sont pas encore résolus. Vous devez faire appel .then à la promesse
+           pour capturer les résultats quel que soit l'état de la promesse
+        */
+        const verif= checkArticle(i.id)
+        verif.then((value) => {
             if (value===0)
                 client.query('INSERT INTO articles(id, infos) VALUES ($1, $2)', [i.id, strJson])
 
         })
-}
+    }
+
+})
+
 
 
 async function checkArticle(id) {
@@ -290,6 +327,17 @@ router.post('/panier', async (req, res) => {
 /*
  * Cette route doit permettre de confirmer un panier, en recevant le nom et prénom de l'utilisateur
  * Le panier est ensuite supprimé grâce à req.session.destroy()
+ */
+
+
+// problème au niveau req.session.user.id, l'id ne se recup pas
+/*
+user {
+  createdAt: '2021-10-31T16:50:07.144Z',
+  updatedAt: '2021-10-31T16:50:07.144Z',
+  cache: [],
+  data: { id: 1, email: 'titi@gmail.com' }
+}
  */
 router.post('/panier/pay', async (req, res) => {
     if (req.session.user.data) {

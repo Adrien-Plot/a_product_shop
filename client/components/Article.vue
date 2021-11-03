@@ -37,8 +37,8 @@
                     @click="addToPanier(i.id)"
                     v-if="panier.articles.find(a => a.id === i.id) === undefined">Ajouter au Panier
             </button>
-            <button type="button" @click="deleteArticle(i.id)" class="btn btn-danger">Supprimer</button>
-            <button type="button" @click="editArticle(i)" class="btn btn-secondary">Editer</button>
+            <!--<button type="button" @click="deleteArticle(i.id)" class="btn btn-danger">Supprimer</button>
+            <button type="button" @click="editArticle(i)" class="btn btn-secondary">Editer</button>-->
           </div>
           <div class="buttonlist" v-else>
             <button type="button" v-on:click="sendEditArticle" class="btn btn-success">Valider</button>
@@ -78,7 +78,7 @@ module.exports = {
     changeQuantity(articleId, articleQuantity) {
       this.$emit('change-quantity', articleId, articleQuantity)
     },
-    deleteArticle(articleId) {
+    /*deleteArticle(articleId) {
       this.$emit('delete-article', articleId)
       router.replace({
         path: '/'
@@ -90,7 +90,7 @@ module.exports = {
       this.editingArticle.description = article.description
       this.editingArticle.image = article.image
       this.editingArticle.price = article.price
-    },
+    },*/
     sendEditArticle() {
       this.$emit('update-article', this.editingArticle)
       this.abortEditArticle()

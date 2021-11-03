@@ -57,11 +57,11 @@ const app = new Vue({
             article.image = newArticle.image
             article.price = newArticle.price
         },
-        async deleteArticle(articleId) {
+        /*async deleteArticle(articleId) {
             await axios.delete('/api/article/' + articleId)
             const index = this.articles.findIndex(a => a.id === articleId)
             this.articles.splice(index, 1)
-        },
+        },*/
         async addToPanier(articleId) {
             let res = await axios.post('/api/panier', {id: articleId, quantity: 1})
             this.panier = res.data
