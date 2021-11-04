@@ -3,13 +3,15 @@ const Panier = window.httpVueLoader('./components/Panier.vue')
 const Article = window.httpVueLoader('./components/Article.vue')
 const Register = window.httpVueLoader('./components/Register.vue')
 const Login = window.httpVueLoader('./components/Login.vue')
+const LivraisonForm = window.httpVueLoader('./components/LivraisonForm.vue')
 
 const routes = [
     {path: '/', component: Home, name: 'home'},
     {path: '/panier', component: Panier},
     {path: '/article/:id', component: Article, name: 'article'},
     {path: '/register', component: Register},
-    {path: '/login', component: Login, name: 'login'}
+    {path: '/login', component: Login, name: 'login'},
+    {path: '/livraison', component: LivraisonForm, name: 'Livraison'}
 ]
 
 const router = new VueRouter({
