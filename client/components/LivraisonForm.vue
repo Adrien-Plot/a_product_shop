@@ -9,33 +9,33 @@
                  placeholder="Entrez le numero de carte" v-model="nCarte.input" v-bind:class="{'is-invalid': nCarte.invalid || invaliddata}"
                  required>
           <div class="invalid-feedback" v-if="!invaliddata">
-            Le format ne correspond pas à une email
+            Le format ne correspond pas à un numéro de carte bancaire
           </div>
         </div>
         <div class="form-group">
           <label for="exampleInput2">Nom du proprio :</label>
           <input type="text" class="form-control" id="exampleInput2" aria-describedby="emailHelp"
-                 placeholder="Entrez le nom du proprio" v-model="proprio.input" v-bind:class="{'is-invalid': invaliddata}"
+                 placeholder="Entrez le nom du proprio" v-model="proprio.input" v-bind:class="{'is-invalid': proprio.invalid || invaliddata}"
                  required>
           <div class="invalid-feedback" v-if="!invaliddata">
-            Le format ne correspond pas à une email
+            Le format ne correspond pas à un nom
           </div>
         </div>
         <div class="form-group">
           <label for="exampleInput3">Date d'expiration :</label>
           <input type="text" class="form-control" id="exampleInput3" aria-describedby="emailHelp"
-                 placeholder="Entrez la date d'expiration" v-model="expDate.input" v-bind:class="{'is-invalid': invaliddata}"
+                 placeholder="Entrez la date d'expiration" v-model="expDate.input" v-bind:class="{'is-invalid': expDate.invalid || invaliddata}"
                  required>
           <div class="invalid-feedback" v-if="!invaliddata">
-            Le format ne correspond pas à une email
+            Le format ne correspond pas à une date
           </div>        </div>
         <div class="form-group">
           <label for="exampleInput4">CVC :</label>
           <input type="text" class="form-control" id="exampleInput4" aria-describedby="emailHelp"
-                 placeholder="Entrez le CVC" v-model="CVC.input" v-bind:class="{'is-invalid': invaliddata}"
+                 placeholder="Entrez le CVC" v-model="CVC.input" v-bind:class="{'is-invalid': CVC.invalid || invaliddata}"
                  required>
           <div class="invalid-feedback" v-if="!invaliddata">
-            Le format ne correspond pas à une email
+            Le format ne correspond pas à un numéro à trois chiffres
           </div>
         </div>
         <div>
@@ -62,10 +62,10 @@ module.exports = {
   },
   methods: {
     register() { //à terminer (regex comparaison)
-      this.nCarte.invalid = !this.nCarte.input.match(/^(?=.*[0-9]).{16,}$/)
-      this.proprio.invalid = !this.proprio.input.match(/^(?=.*[A-Z])$/)
-      this.expDate.invalid = !this.expDate.input.match(/^(?=.*[0-9]).{8,}$/)
-      this.CVC.invalid = !this.CVC.input.match(/^(?=.*[0-9]).{3,}$/);
+      this.nCarte.invalid = !this.nCarte.input.match(/^(?=.*[0-9]).{16,16}$/)
+      this.proprio.invalid = !this.proprio.input.match(/^(?=.*[A-Z])(?=.*[a-z]).{1,30}$/)
+      this.expDate.invalid = !this.expDate.input.match(/^(?=.*[0-9]).{8,8}$/)
+      this.CVC.invalid = !this.CVC.input.match(/^(?=.*[0-9]).{3,3}$/);
       // à modifier
       let validForm = !this.CVC.invalid
       if (validForm) {
