@@ -1,7 +1,7 @@
 <template>
   <div id="login">
-    <form id="box">
-      <div class="forms">
+    <div id="box">
+      <form class="forms">
           <div class="form-banc" v-on:submit.prevent="register">
             <h3>Coordonées Bancaires</h3>
             <div class="form-group">
@@ -10,7 +10,7 @@
                      placeholder="Entrez le nom du proprio" v-model="proprio.input" v-bind:class="{'is-invalid': proprio.invalid || invaliddata}"
                      required>
               <div class="invalid-feedback" v-if="!invaliddata">
-                Le format ne correspond pas à un nom
+                Le format ne correspond pas à un nom : veuillez mettre une majuscule en début de nom
               </div>
             </div>
             <div class="form-group">
@@ -25,7 +25,7 @@
 
             <div class="form-group">
               <label for="expDate">Date d'expiration :</label>
-              <input type="text" class="form-control" id="expDate"
+              <input type="date" class="form-control" id="expDate"
                      placeholder="Entrez la date d'expiration" v-model="expDate.input" v-bind:class="{'is-invalid': expDate.invalid || invaliddata}"
                      required>
               <div class="invalid-feedback" v-if="!invaliddata">
@@ -86,10 +86,11 @@
             <div>
               <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre coordonées bancaires.</small>
             </div>
-            <button v-on:click="register"  class="btn btn-primary">Enregistrer</button>
+
           </div>
-    </div>
-  </form>
+        <button v-on:click="register"  class="btn btn-primary">Enregistrer</button>
+    </form>
+  </div>
 </div>
 </template>
 
@@ -114,11 +115,16 @@ module.exports = {
     register() { //à terminer (regex comparaison)
       this.proprio.invalid = !this.proprio.input.match(/^(?=.*[A-Z])(?=.*[a-z]).{1,30}$/)
       this.nCarte.invalid = !this.nCarte.input.match(/^(?=.*[0-9]).{16,16}$/)
-      this.expDate.invalid = !this.expDate.input.match(/^(?=.*[0-9]).{8,8}$/)
+      this.expDate.invalid = !this.expDate.input.match(/^.*$/)
       this.CVC.invalid = !this.CVC.input.match(/^(?=.*[0-9]).{3,3}$/);
+
+      this.street.invalid = !this.street.input.match(/^[1-9]+ [0-9a-zA-Z èéà]+$/)
+      this.codePost.invalid = !this.codePost.input.match(/^(?=.*[0-9]).{5,5}$/)
+      this.apart.invalid = !this.apart.input.match(/^[0-9]+$/)
+      this.infPlus.invalid = !this.infPlus.input.match(/^.*$/);
       // à modifier
       let validForm = this.proprio.invalid && this.nCarte.invalid && this.expDate.invalid && !this.CVC.invalid
-      console.log("test")
+
      /* if (validForm) {
         this.$emit('register', {email: this.CVC.input, passwd: this.expDate.input})
       }*/
