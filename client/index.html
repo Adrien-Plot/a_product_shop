@@ -44,7 +44,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link">
-                            <router-link to='/livraison'>Infos de livraison</router-link>
+                            <router-link v-if="isConnected" to='/livraison'>Infos de livraison</router-link>
                         </a>
                     </li>
                 </ul>
@@ -88,6 +88,7 @@
                      :search=this.search
                      :invaliddata="invaliddata"
                      :user="user"
+                     :isConnected="isConnected"
                      @add-article="addArticle"
                      @update-article="updateArticle"
                      @add-to-panier="addToPanier"
@@ -96,6 +97,7 @@
                      @valid-panier="validPanier"
                      @register="register"
                      @login="login"
+                     @deliver="deliver"
         ></router-view>
     </main>
 </div>

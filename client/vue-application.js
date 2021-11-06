@@ -31,7 +31,8 @@ const app = new Vue({
             articles: []
         },
         user: undefined,
-        invaliddata: false
+        invaliddata: false,
+        isConnected: false,
     },
     async mounted() {
         const res = await axios.get('/api/articles')
@@ -98,10 +99,22 @@ const app = new Vue({
                 }
             });
         },
+        async deliver(data) {
+            await axios.post('/api/deliver', data).then(response => {
+                router.replace({
+                    name: 'home'
+                })
+            }).catch(error => {
+                if (error.response.data.code === 0) {
+                    this.invaliddata = true
+                }
+            });
+        },
         async login(data) {
             await axios.post('/api/login', data).then(async response => {
-                this.user = response.data.data;
-                this.panier.articles = response.data.panier;
+                this.user = response.data.data
+                this.panier.articles = response.data.panier
+                this.isConnected = true
                 router.replace({
                     name: 'home'
                 })
@@ -115,6 +128,7 @@ const app = new Vue({
             await axios.post('/api/logout')
             this.panier.articles = []
             this.user = undefined
+            this.isConnected = false
         }
 
     }

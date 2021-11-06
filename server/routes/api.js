@@ -184,12 +184,16 @@ router.post('/register', async (req, res) => {
         return
     }
 
+
+    //verification qu'un utilisateur existe deja ne fonctionne pas
     let query = new Promise((resolve, reject) => {
         client.query('SELECT * FROM users WHERE email = $1', [email], (err, res) => {
             if (err) reject(err)
             else {
                 if (res.rows.length > 0) {
+                    res.status(401).json({message: "User already exist", code: 3})
                     reject("L'utilisateur existe déjà")
+                    return
                 } else resolve()
             }
         })
@@ -206,6 +210,10 @@ router.post('/register', async (req, res) => {
 
 
     // on envoie l'article ajouté à l'utilisateur
+})
+
+router.post('/deliver', async (req, res) => {
+    console.log("test")
 })
 
 router.post("/login", async (req, res) => {
