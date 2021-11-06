@@ -1,8 +1,8 @@
 <template>
   <div id="login">
-    <div id="box">
+    <form id="box">
       <div class="forms">
-          <form class="form-banc" v-on:submit.prevent="register">
+          <div class="form-banc" v-on:submit.prevent="register">
             <h3>Coordonées Bancaires</h3>
             <div class="form-group">
               <label for="labelProp">Nom du proprio :</label>
@@ -43,9 +43,9 @@
             <div>
               <small class="form-text text-muted">Nous ne partagerons jamais votre coordonées bancaires.</small>
             </div>
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-          </form>
-          <form class="form-ad" v-on:submit.prevent="register">
+            <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
+          </div>
+          <div class="form-ad" v-on:submit.prevent="register">
             <h3>Adresse de livraison</h3>
             <div class="form-group">
               <label for="adLabel">Adresse :</label>
@@ -77,7 +77,7 @@
             <div class="form-group">
               <label for="infCompLabel">Informations complémentaires :</label>
               <input type="text" class="form-control" id="infCompLabel"
-                     placeholder="Entrez le CVC" v-model="infPlus.input" v-bind:class="{'is-invalid': infPlus.invalid || invaliddata}"
+                     placeholder="Entrez des informations complémentaires : code porte, numéro de téléphone etc." v-model="infPlus.input" v-bind:class="{'is-invalid': infPlus.invalid || invaliddata}"
                      required>
               <div class="invalid-feedback" v-if="!invaliddata">
                 Le format ne correspond pas à un numéro à trois chiffres
@@ -86,10 +86,10 @@
             <div>
               <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre coordonées bancaires.</small>
             </div>
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-          </form>
+            <button v-on:click="register"  class="btn btn-primary">Enregistrer</button>
+          </div>
     </div>
-  </div>
+  </form>
 </div>
 </template>
 
@@ -118,16 +118,18 @@ module.exports = {
       this.CVC.invalid = !this.CVC.input.match(/^(?=.*[0-9]).{3,3}$/);
       // à modifier
       let validForm = this.proprio.invalid && this.nCarte.invalid && this.expDate.invalid && !this.CVC.invalid
-      if (validForm) {
+      console.log("test")
+     /* if (validForm) {
         this.$emit('register', {email: this.CVC.input, passwd: this.expDate.input})
-      }
+      }*/
     },
+    /*
     deliver() {
       let validForm = true
       if (validForm) {
         this.$emit('deliver', {email: this.CVC.input, passwd: this.expDate.input})
       }
-    }
+    }*/
   }
 }
 </script>
