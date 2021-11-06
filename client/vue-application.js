@@ -91,6 +91,18 @@ const app = new Vue({
         async register(data) {
             await axios.post('/api/register', data).then(response => {
                 router.replace({
+                    name: 'login'
+                })
+            }).catch(error => {
+                if (error.response.data.code === 0) {
+                    this.invaliddata = true
+                }
+            });
+        },
+
+        async livraison(data) {
+            await axios.put('/api/livraison', data).then(response => {
+                router.replace({
                     name: 'home'
                 })
             }).catch(error => {
@@ -99,6 +111,7 @@ const app = new Vue({
                 }
             });
         },
+
         async deliver(data) {
             await axios.post('/api/deliver', data).then(response => {
                 router.replace({

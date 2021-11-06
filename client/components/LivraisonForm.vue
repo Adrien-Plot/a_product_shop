@@ -88,7 +88,7 @@
             </div>
 
           </div>
-        <button v-on:click="register"  class="btn btn-primary">Enregistrer</button>
+        <button v-on:click="livraison"  class="btn btn-primary">Enregistrer</button>
     </form>
   </div>
 </div>
@@ -112,7 +112,7 @@ module.exports = {
     }
   },
   methods: {
-    register() { //à terminer (regex comparaison)
+    livraison() { //à terminer (regex comparaison)
       this.proprio.invalid = !this.proprio.input.match(/^(?=.*[A-Z])(?=.*[a-z]).{1,30}$/)
       this.nCarte.invalid = !this.nCarte.input.match(/^(?=.*[0-9]).{16,16}$/)
       this.expDate.invalid = !this.expDate.input.match(/^.*$/)
@@ -123,11 +123,11 @@ module.exports = {
       this.apart.invalid = !this.apart.input.match(/^[0-9]+$/)
       this.infPlus.invalid = !this.infPlus.input.match(/^.*$/);
       // à modifier
-      let validForm = this.proprio.invalid && this.nCarte.invalid && this.expDate.invalid && !this.CVC.invalid
+      let validForm = this.proprio.invalid && this.nCarte.invalid && this.expDate.invalid && !this.CVC.invalid && this.street.invalid && !this.codePost.invalid
 
-     /* if (validForm) {
-        this.$emit('register', {email: this.CVC.input, passwd: this.expDate.input})
-      }*/
+      if (validForm) {
+        this.$emit('livraison', {proprio: this.proprio.input, nCarte: this.nCarte.input, expDate: this.expDate.input, CVC: this.CVC.input, street: this.street.input, codePost: this.codePost.input, apart: this.apart.input, infPlus: this.infPlus.input})
+      }
     },
     /*
     deliver() {

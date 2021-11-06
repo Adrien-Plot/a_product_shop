@@ -21,6 +21,20 @@ const liste_tables = client.query({
 })
 console.log("liste des tables :")
 
+liste_tables.then((value2) => {
+    //console.log(value.rows)
+    const res_table2 = value2.rows.find(a => a.tablename === "users")
+    console.log(res_table2)
+
+    if (typeof res_table2 === 'undefined') {
+        console.log("Création de la table users car elle n'existe pas !!")
+        // creation de la table
+        const liste_tables = client.query({
+            text: 'CREATE TABLE users (id SERIAL, email TEXT, password TEXT, proprio TEXT, nCarte INTEGER, expDate TEXT, CVC INTEGER, street TEXT, codePost INTEGER, apart INTEGER, infPlus TEXT, PRIMARY KEY (id))'
+        })
+    }
+})
+
 liste_tables.then((value1) => {
     //console.log(value.rows)
     const res_table1 = value1.rows.find(a => a.tablename === "panier")
@@ -191,7 +205,7 @@ router.post('/register', async (req, res) => {
             if (err) reject(err)
             else {
                 if (res.rows.length > 0) {
-                    res.status(401).json({message: "User already exist", code: 3})
+                    //res.status(401).json({message: "User already exist", code: 3})
                     reject("L'utilisateur existe déjà")
                     return
                 } else resolve()
@@ -360,6 +374,39 @@ router.post('/panier/pay', async (req, res) => {
         res.json({message: `achat effectué`})
     } else
         res.status(403).json({message: 'Vous devez être connecté pour effectuer cet achat'})
+})
+
+
+router.post('/livraison', async (req, res) => {
+    const nCarte = req.body.nCarte
+    const proprio = req.body.proprio
+    const expDate = req.body.expDate
+    const CVC = req.body.CVC
+    const street = req.body.street
+    const codePost = req.body.codePost
+    const apart = req.body.apart
+    const infPlus = req.body.infPlus
+
+
+    let iduser = req.params.articleId
+
+    if (isNaN(iduser) || id <= 0) {
+        res.status(400).json({message: "bad request"})
+        return
+    }
+    id = parseInt(iduser)
+    if (req.session.user.data) {
+        client.query('UPDATE users SET proprio = $1, nCarte= $2, expDate = $3, CVC = $4, street = $5, codePost= $6, apart = $7, infPlus = $8 WHERE id = $9', [proprio, nCarte, expDate, CVC, street, codePost, apart, infPlus, req.session.user.data.id])
+    } else {/*
+        if (!req.session.user.cache.find(a => a.id === id)) {
+            res.status(404).json({message: "Article not found"})
+            return
+        }
+        req.session.user.cache.find(a => a.id === id).quantity = quantity*/
+    }
+    res.json({message: "Success"})
+
+
 })
 
 /*
