@@ -2,7 +2,7 @@
   <div id="login">
     <div id="box">
       <form class="forms">
-          <div class="form-banc" v-on:submit.prevent="register">
+          <div class="form-banc" v-on:submit.prevent="livraison">
             <h3>Coordonées Bancaires</h3>
             <div class="form-group">
               <label for="labelProp">Nom du proprio :</label>
@@ -45,7 +45,7 @@
             </div>
             <!--<button type="submit" class="btn btn-primary">Enregistrer</button>-->
           </div>
-          <div class="form-ad" v-on:submit.prevent="register">
+          <div class="form-ad" v-on:submit.prevent="livraison">
             <h3>Adresse de livraison</h3>
             <div class="form-group">
               <label for="adLabel">Adresse :</label>
@@ -118,12 +118,18 @@ module.exports = {
       this.expDate.invalid = !this.expDate.input.match(/^.*$/)
       this.CVC.invalid = !this.CVC.input.match(/^(?=.*[0-9]).{3,3}$/);
 
-      this.street.invalid = !this.street.input.match(/^[1-9]+ [0-9a-zA-Z èéà]+$/)
+      //this.street.invalid = !this.street.input.match(/^[1-9]+ [0-9a-zA-Z èéà']+$/)
+      this.street.invalid = !this.street.input.match(/^.*$/)
       this.codePost.invalid = !this.codePost.input.match(/^(?=.*[0-9]).{5,5}$/)
-      this.apart.invalid = !this.apart.input.match(/^[0-9]+$/)
-      this.infPlus.invalid = !this.infPlus.input.match(/^.*$/);
-      // à modifier
-      let validForm = this.proprio.invalid && this.nCarte.invalid && this.expDate.invalid && !this.CVC.invalid && this.street.invalid && !this.codePost.invalid
+      /*if(this.apart.input === ''){
+        this.apart.invalid = false
+      }
+      else{
+        this.apart.invalid = !this.apart.input.match(/^([0-9]+)$/)
+      }
+      this.infPlus.invalid = !this.infPlus.input.match(/^.*$/);*/
+
+      let validForm = !this.proprio.invalid && !this.nCarte.invalid && !this.expDate.invalid && !this.CVC.invalid && !this.street.invalid && !this.codePost.invalid && !this.apart.invalid && !this.infPlus.invalid
 
       if (validForm) {
         this.$emit('livraison', {proprio: this.proprio.input, nCarte: this.nCarte.input, expDate: this.expDate.input, CVC: this.CVC.input, street: this.street.input, codePost: this.codePost.input, apart: this.apart.input, infPlus: this.infPlus.input})

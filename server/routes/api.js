@@ -30,7 +30,7 @@ liste_tables.then((value2) => {
         console.log("Création de la table users car elle n'existe pas !!")
         // creation de la table
         const liste_tables = client.query({
-            text: 'CREATE TABLE users (id SERIAL, email TEXT, password TEXT, proprio TEXT, nCarte INTEGER, expDate TEXT, CVC INTEGER, street TEXT, codePost INTEGER, apart INTEGER, infPlus TEXT, PRIMARY KEY (id))'
+            text: 'CREATE TABLE users (id SERIAL, email TEXT, password TEXT, proprio TEXT, nCarte TEXT, expDate TEXT, CVC INTEGER, street TEXT, codePost INTEGER, apart INTEGER, infPlus TEXT, PRIMARY KEY (id))'
         })
     }
 })
@@ -377,7 +377,8 @@ router.post('/panier/pay', async (req, res) => {
 })
 
 
-router.post('/livraison', async (req, res) => {
+router.put('/livraison', async (req, res) => {
+    console.log("test2")
     const nCarte = req.body.nCarte
     const proprio = req.body.proprio
     const expDate = req.body.expDate
@@ -388,13 +389,9 @@ router.post('/livraison', async (req, res) => {
     const infPlus = req.body.infPlus
 
 
-    let iduser = req.params.articleId
 
-    if (isNaN(iduser) || id <= 0) {
-        res.status(400).json({message: "bad request"})
-        return
-    }
-    id = parseInt(iduser)
+
+    // UPDATE users SET proprio = 'Patrick', nCarte= '0123456789123456', expDate = '21112021', CVC =123, street = 'place de la république', codePost= 75010, apart = 1, infPlus = 'toto' WHERE id = 1
     if (req.session.user.data) {
         client.query('UPDATE users SET proprio = $1, nCarte= $2, expDate = $3, CVC = $4, street = $5, codePost= $6, apart = $7, infPlus = $8 WHERE id = $9', [proprio, nCarte, expDate, CVC, street, codePost, apart, infPlus, req.session.user.data.id])
     } else {/*

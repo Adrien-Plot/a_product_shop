@@ -109,6 +109,7 @@ const app = new Vue({
                 if (error.response.data.code === 0) {
                     this.invaliddata = true
                 }
+                console.log(error)
             });
         },
 
