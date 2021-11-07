@@ -20,6 +20,20 @@ const liste_tables = client.query({
 
 })
 console.log("liste des tables :")
+liste_tables.then((value3) => {
+    //console.log(value.rows)
+    const res_table2 = value3.rows.find(a => a.tablename === "commande")
+    console.log(res_table2)
+
+    if (typeof res_table2 === 'undefined') {
+        console.log("Création de la table commande car elle n'existe pas !!")
+        // creation de la table
+        const liste_tables = client.query({
+
+            text: 'CREATE TABLE commande ( id INTEGER, proprio TEXT, street TEXT, codepost integer, apart TEXT, infplus TEXT, PRIMARY KEY (id))'
+        })
+    }
+})
 
 liste_tables.then((value2) => {
     //console.log(value.rows)
@@ -178,6 +192,7 @@ router.use((req, res, next) => {
 /** Routes relatives à la BDD **/
 
 router.post('/register', async (req, res) => {
+    console.log("post/register")
     const email = req.body.email
     const passwd = req.body.passwd
     // vérification de la validité des données d'entrée
@@ -205,33 +220,20 @@ router.post('/register', async (req, res) => {
             if (err) reject(err)
             else {
                 if (res.rows.length > 0) {
-                    //res.status(401).json({message: "User already exist", code: 3})
                     reject("L'utilisateur existe déjà")
                 } else resolve()
             }
         })
     })
-
-        /*let passwd_hash = await bcrypt.hash(passwd, 10)
-        console.log("on va faire l'insert")
-        console.log(email,passwd)
-
-
-
-        await client.query('INSERT INTO users(email, password) VALUES ($1,$2)', [email, passwd_hash])
-        res.json({'status': 'success'})*/
-
-    try{
+    try {
         await query;
         let passwd_hash = await bcrypt.hash(passwd, 10)
-        console.log("on va faire l'insert")
-        console.log(email,passwd)
         await client.query('INSERT INTO users(email, password) VALUES ($1,$2)', [email, passwd_hash])
         res.json({'status': 'success'})
-    }catch (err){
+
+    } catch (err) {
         res.status(401).json({message: err, code: 0})
     }
-
 
     // on envoie l'article ajouté à l'utilisateur
 })
@@ -372,7 +374,7 @@ user {
 }
  */
 router.post('/panier/pay', async (req, res) => {
-   console.log("req.session.user.data:"+req.session.user.data)
+    console.log("req.session.user.data:"+req.session.user.data)
     if (req.session.user.data) {
         console.log("req.session.user.data.id:"+req.session.user.data.id)
         let panier = await getPanier(req.session.user.data.id)
@@ -380,13 +382,35 @@ router.post('/panier/pay', async (req, res) => {
             res.status(400).json({message: "Votre panier est vide"})
             return
         }
-        let  userdata = client.query({
-            text: 'SELECT * FROM users WHERE id = $1',
-            values:[req.session.user.data.id]
-        })
+        // ------------------------
+        /*
 
-        console.log("userdata :"+res.rows.length)
-        //client.query('DELETE FROM panier WHERE "user" = $1', [req.session.user.data.id])
+              let promise = new Promise((resolve, reject) => {
+                   client.query('SELECT * FROM users WHERE id = $1', [req.session.user.data.id], (err, res) => {
+                       if (err) reject(err)
+                       else {
+                           if (res.rows.length === 0) {
+                               reject({message: 'aucun article dans la bdd', code: 1})
+                           } else {
+
+                               for (let i of res.rows) {
+                                   let id= i.id
+                                   let proprio = i.proprio
+                                   let street = i.street
+                                   let codepost = i.codepost
+                                   let apart = i.apart
+                                   let infplus = i.infplus
+                               }
+                           }
+                       }
+                   })
+               })*/
+        // rajouter dans commande
+        // INSERT INTO users(email, password) VALUES ($1,$2)', [email, passwd_hash]
+        //client.query('INSERT INTO commande ( id, proprio, street, codepost, apart, infplus) VALUES ($1,$2,$3,$4,$5,$6), [id, proprio, street, codepost, apart, infplusd])
+
+        //-------------------------------------------------------
+        client.query('DELETE FROM panier WHERE "user" = $1', [req.session.user.data.id])
         res.json({message: `achat effectué`})
     } else
         res.status(403).json({message: 'Vous devez être connecté pour effectuer cet achat'})
@@ -394,28 +418,24 @@ router.post('/panier/pay', async (req, res) => {
 
 
 router.put('/livraison', async (req, res) => {
-    console.log("test2")
-    const nCarte = req.body.nCarte
-    const proprio = req.body.proprio
-    const expDate = req.body.expDate
-    const CVC = req.body.CVC
-    const street = req.body.street
-    const codePost = req.body.codePost
-    const apart = req.body.apart
-    const infPlus = req.body.infPlus
 
+    console.log("on est dans put livraison !; user id :",req.session.user.data.id)
+    let proprio = req.body.proprio
+    let nCarte = req.body.nCarte
+    let expDate = req.body.expDate
+    let CVC = req.body.CVC
+    let street = req.body.street
+    let codePost = req.body.codePost
+    let apart = req.body.apart
+    let infPlus = req.body.infPlus
 
-
-
+    // exemple de commande OK
+    // attention nCarte en text
     // UPDATE users SET proprio = 'Patrick', nCarte= '0123456789123456', expDate = '21112021', CVC =123, street = 'place de la république', codePost= 75010, apart = 1, infPlus = 'toto' WHERE id = 1
     if (req.session.user.data) {
-        client.query('UPDATE users SET proprio = $1, nCarte= $2, expDate = $3, CVC = $4, street = $5, codePost= $6, apart = $7, infPlus = $8 WHERE id = $9', [proprio, nCarte, expDate, CVC, street, codePost, apart, infPlus, req.session.user.data.id])
-    } else {/*
-        if (!req.session.user.cache.find(a => a.id === id)) {
-            res.status(404).json({message: "Article not found"})
-            return
-        }
-        req.session.user.cache.find(a => a.id === id).quantity = quantity*/
+        client.query('UPDATE users SET proprio = $1, nCarte= $2, expDate = $3, CVC = $4, street = $5, codePost = $6, apart = $7, infPlus = $8 WHERE id = $9', [proprio, nCarte, expDate, CVC,street, codePost, apart,infPlus, req.session.user.data.id])
+    } else {
+        res.json({message: "Les données ne sont pas reçues !!!"})
     }
     res.json({message: "Success"})
 
