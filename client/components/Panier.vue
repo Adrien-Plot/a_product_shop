@@ -55,14 +55,15 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body" v-if="panier.articles.length !== 0 ">
+                <div class="modal-body" v-if="panier.articles.length !== 0">
                   Êtes-vous sûr de vouloir effectuer cet achat ?
                   <button type="button" class="btn btn-primary" data-dismiss="modal"
                           v-on:click="validePanier">Valider mon Panier
                   </button>
                 </div>
+
                 <div class="modal-body" v-else>
-                  Votre panier est vide :(
+                  Votre panier est vide et/ou vous n'avez pas rempli les informations de livraison :(
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
@@ -81,7 +82,8 @@ module.exports = {
   props: {
     articles: {type: Array, default: []},
     panier: {type: Object},
-    user: {type: Object}
+    user: {type: Object},
+    livraisondata : {type: Boolean, default: false}
   },
   data() {
     return {

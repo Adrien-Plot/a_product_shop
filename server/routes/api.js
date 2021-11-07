@@ -380,7 +380,13 @@ router.post('/panier/pay', async (req, res) => {
             res.status(400).json({message: "Votre panier est vide"})
             return
         }
-        client.query('DELETE FROM panier WHERE "user" = $1', [req.session.user.data.id])
+        let  userdata = client.query({
+            text: 'SELECT * FROM users WHERE id = $1',
+            values:[req.session.user.data.id]
+        })
+
+        console.log("userdata :"+res.rows.length)
+        //client.query('DELETE FROM panier WHERE "user" = $1', [req.session.user.data.id])
         res.json({message: `achat effectué`})
     } else
         res.status(403).json({message: 'Vous devez être connecté pour effectuer cet achat'})

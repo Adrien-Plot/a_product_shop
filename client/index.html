@@ -24,7 +24,7 @@
 <div id="app">
     <div id="navbar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <router-link to='/'><a class="navbar-brand">À la bonne franquette</a></router-link>
+            <router-link to='/'><a class="navbar-brand">Le site des Heureux</a></router-link>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,13 +42,11 @@
                             <router-link to='/panier'>Panier</router-link>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link">
-                            <router-link v-if="isConnected" to='/livraison'>Infos de livraison</router-link>
-                        </a>
-                    </li>
+
                 </ul>
                 <ul class="navbar-nav my-2 my-lg-0" v-if="!user">
+
+
                     <li class="nav-item active">
                         <a class="nav-link">
                             <router-link to='/register'>S'inscrire</router-link>
@@ -67,7 +65,18 @@
                             <b>{{this.user.email}}</b>
                         </a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link">
+                            <b>{{this.livraisondata}}</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link">
+                            <router-link  to='/livraison'>Infos de livraison</router-link>
+                        </a>
+                    </li>
 
+                    <li>
                         <a class="nav-link" v-on:click="logout" v-bind:style="{cursor: 'pointer'}">
                             Se Deconnecter
                         </a>

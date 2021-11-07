@@ -31,6 +31,7 @@ const app = new Vue({
             articles: []
         },
         user: undefined,
+        livraisondata : false,
         invaliddata: false,
         isConnected: false,
     },
@@ -78,15 +79,16 @@ const app = new Vue({
             this.panier.articles.find(a => a.id === articleId).quantity = articleQuantity
         },
         async validPanier() {
-            await axios.post('/api/panier/pay')
-                .then(res => this.panier = {articles: []})
-                .catch(error => {
-                    if (error.response.status === 403) {
-                        router.replace({
-                            name: 'login'
-                        })
-                    }
-                });
+
+                await axios.post('/api/panier/pay')
+                    .then(res => this.panier = {articles: []})
+                    .catch(error => {
+                        if (error.response.status === 403) {
+                            router.replace({
+                                name: 'login'
+                            })
+                        }
+                    });
         },
         async register(data) {
             await axios.post('/api/register', data).then(response => {
@@ -102,6 +104,7 @@ const app = new Vue({
 
         async livraison(data) {
             await axios.put('/api/livraison', data).then(response => {
+                this.livraisondata = true
                 router.replace({
                     name: 'home'
                 })
