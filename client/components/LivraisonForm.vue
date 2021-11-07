@@ -83,12 +83,9 @@
                 Le format ne correspond pas à un numéro à trois chiffres
               </div>
             </div>
-            <div>
-              <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre coordonées bancaires.</small>
-            </div>
-
+            <button v-on:click="livraison"  class="btn btn-primary">Enregistrer</button>
           </div>
-        <button v-on:click="livraison"  class="btn btn-primary">Enregistrer</button>
+
     </form>
   </div>
 </div>

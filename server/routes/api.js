@@ -207,20 +207,30 @@ router.post('/register', async (req, res) => {
                 if (res.rows.length > 0) {
                     //res.status(401).json({message: "User already exist", code: 3})
                     reject("L'utilisateur existe déjà")
-                    return
                 } else resolve()
             }
         })
     })
 
-        let passwd_hash = await bcrypt.hash(passwd, 10)
+        /*let passwd_hash = await bcrypt.hash(passwd, 10)
         console.log("on va faire l'insert")
         console.log(email,passwd)
 
 
 
         await client.query('INSERT INTO users(email, password) VALUES ($1,$2)', [email, passwd_hash])
+        res.json({'status': 'success'})*/
+
+    try{
+        await query;
+        let passwd_hash = await bcrypt.hash(passwd, 10)
+        console.log("on va faire l'insert")
+        console.log(email,passwd)
+        await client.query('INSERT INTO users(email, password) VALUES ($1,$2)', [email, passwd_hash])
         res.json({'status': 'success'})
+    }catch (err){
+        res.status(401).json({message: err, code: 0})
+    }
 
 
     // on envoie l'article ajouté à l'utilisateur

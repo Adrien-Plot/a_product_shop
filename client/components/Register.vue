@@ -2,6 +2,7 @@
   <div id="login">
     <div id="box">
       <form v-on:submit.prevent="register">
+        <h3>Inscription</h3>
         <div class="form-group">
           <label for="exampleInputEmail1">Adresse email</label>
           <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
